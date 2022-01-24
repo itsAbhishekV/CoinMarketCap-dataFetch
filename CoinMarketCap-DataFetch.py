@@ -1,19 +1,16 @@
-from requests import Request, Session
-from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
+from requests import Session
 import json
 
-url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-parameters = {'start':'1',  'limit':'1',  'convert':'USD'}
-headers = {'Accepts': 'application/json',  'X-CMC_PRO_API_KEY': '9c8e1437-807f-4aac-a733-7c2499937781'}
+URL = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+params = {'start':'1',  'limit':'10',  'convert':'USD'} #change limits acc to your needs
+headers = {'Accepts': 'application/json',  'X-CMC_PRO_API_KEY': 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'}  #Your coin market cap api key here
 session = Session()
 session.headers.update(headers)
 
-try:
-    response = session.get(url, params=parameters)
-    data = json.loads(response.text)
-    new_data = data['data']
-    print(new_data)
-    # for i in range(0, len(new_data)):
-    #     print(f"{new_data[i]['name']} ({new_data[i]['symbol']}) : {new_data[i]['quote']['USD']['price']} ")
+response = session.get(URL, params=params)
+data = json.loads(response.text)
+new_data = data['data']
 
-except (ConnectionError, Timeout, TooManyRedirects) as e:  print(e)
+
+for i in range(0, len(new_data)):
+    print(f"{new_data[i]['name']} ({new_data[i]['symbol']}) : {new_data[i]['quote']['USD']['price']} ")
